@@ -1,0 +1,28 @@
+{
+  "name": "Visagê — Consultoria de Imagem",
+  "short_name": "Visagê",
+  "description": "Transforme cortes em consultoria de imagem. Análise facial, recomendações e dossiê profissional.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D0D12",
+  "theme_color": "#6C5CE7",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["business", "lifestyle"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

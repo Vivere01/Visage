@@ -1,0 +1,231 @@
+// Visagê — Schema do Banco de Dados
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── ENUMS ──────────────────────────────────────────────
+
+enum Plan {
+  FREE
+  PRO
+  PREMIUM
+}
+
+enum SessionStatus {
+  PHOTO_PENDING
+  ANALYZING
+  MOCKUP
+  DOSSIER_READY
+  DELIVERED
+}
+
+enum FaceShape {
+  OVAL
+  ROUND
+  SQUARE
+  HEART
+  DIAMOND
+  OBLONG
+}
+
+enum SkinTone {
+  WARM
+  COOL
+  NEUTRAL
+}
+
+enum Season {
+  SPRING
+  SUMMER
+  AUTUMN
+  WINTER
+}
+
+enum Essence {
+  CLASSIC
+  ROMANTIC
+  NATURAL
+  DRAMATIC
+  CREATIVE
+  NAIVE
+}
+
+enum Temperament {
+  CHOLERIC
+  SANGUINE
+  PHLEGMATIC
+  MELANCHOLIC
+}
+
+enum MockupType {
+  OVERLAY
+  AI_GENERATED
+}
+
+// ─── MODELS ─────────────────────────────────────────────
+
+/// Barbeiro — cliente pagante do SaaS
+model Barber {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String?
+  shopName  String
+  slug      String   @unique // URL pública: visage.app/b/{slug}
+  plan      Plan     @default(FREE)
+  avatarUrl String?
+  // Personalização do dossiê
+  brandColor String  @default("#6C5CE7")
+  logoUrl    String?
+  whatsappLink String?
+
+  clients  Client[]
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("barbers")
+}
+
+/// Cliente do barbeiro (quem recebe a consultoria)
+model Client {
+  id        String   @id @default(uuid())
+  barberId  String
+  name      String
+  phone     String?
+  email     String?
+  photoUrl  String?  // foto principal do rosto
+
+  barber   Barber    @relation(fields: [barberId], references: [id], onDelete: Cascade)
+  sessions Session[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([barberId])
+  @@map("clients")
+}
+
+/// Sessão de análise — uma consultoria completa
+model Session {
+  id          String        @id @default(uuid())
+  barberId    String
+  clientId    String
+  status      SessionStatus @default(PHOTO_PENDING)
+  completedAt DateTime?
+
+  barber            Barber             @relation(fields: [barberId], references: [id], onDelete: Cascade)
+  client            Client             @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  faceAnalysis      FaceAnalysis?
+  subjectiveProfile SubjectiveProfile?
+  recommendation    Recommendation?
+  mockups           Mockup[]
+  dossier           Dossier?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([barberId])
+  @@index([clientId])
+  @@map("sessions")
+}
+
+/// Análise facial — resultado do MediaPipe + classificação
+model FaceAnalysis {
+  id          String    @id @default(uuid())
+  sessionId   String    @unique
+  faceShape   FaceShape
+  landmarks   Json?     // 468 pontos do MediaPipe (opcional salvar)
+  foreheadType String   // ex: "alta", "média", "baixa"
+  jawType      String   // ex: "angular", "suave", "quadrada"
+  cheekType    String   // ex: "proeminente", "discreta"
+  skinTone     SkinTone?
+  season       Season?
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("face_analyses")
+}
+
+/// Perfil subjetivo — coleta via questionário
+model SubjectiveProfile {
+  id               String  @id @default(uuid())
+  sessionId        String  @unique
+  essencePrimary   Essence
+  essenceSecondary Essence?
+  temperament      Temperament? // Baseado nas imagens do usuário
+  hairType         String? // Ex: 3a, 3b, 3c, liso, etc.
+  currentStyle     String  // descrição do estilo atual
+  desiredImage     String  // objetivo de imagem
+  lifestyle        String? // contexto de vida
+  profession       String? // profissão
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("subjective_profiles")
+}
+
+/// Recomendação — gerada pela IA
+model Recommendation {
+  id          String @id @default(uuid())
+  sessionId   String @unique
+  haircut     Json   // { name, description, why_fits, care_tips }
+  beard       Json   // { style, description, why_fits, maintenance }
+  styling     Json?  // [dicas de estilo/produtos]
+  wardrobe    Json?  // [cores recomendadas]
+  gapAnalysis String // texto do GAP entre imagem atual e desejada
+  aiModel     String // modelo usado (ex: "gpt-4o-mini")
+  aiPromptHash String? // hash do prompt para debug
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("recommendations")
+}
+
+/// Mockup — overlay ou IA generativa sobre foto do cliente
+model Mockup {
+  id            String     @id @default(uuid())
+  sessionId     String
+  originalPhoto String     // URL da foto original
+  overlayData   Json?      // dados do overlay aplicado
+  resultUrl     String?    // URL da imagem final
+  type          MockupType @default(OVERLAY)
+  selected      Boolean    @default(false) // selecionado para dossiê
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@map("mockups")
+}
+
+/// Dossiê — relatório final entregue ao cliente
+model Dossier {
+  id         String   @id @default(uuid())
+  sessionId  String   @unique
+  publicSlug String   @unique // link público: visage.app/d/{slug}
+  pdfUrl     String?  // URL do PDF gerado
+  sections   Json     // seções incluídas no dossiê
+  viewCount  Int      @default(0)
+  expiresAt  DateTime?
+
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("dossiers")
+}

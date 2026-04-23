@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Cores Escuras (Dark First) baseadas no Notion/Linear */
+    --bg-primary: #0D0D12;
+    --bg-secondary: #13131A;
+    --bg-tertiary: #1C1C24;
+    --bg-elevated: #252530;
+    --bg-card: rgba(28, 28, 36, 0.7);
+
+    /* Textos */
+    --text-primary: #FFFFFF;
+    --text-secondary: #8F9098;
+
+    /* Acentos */
+    --primary: #6C5CE7; /* Roxo vibrante */
+    --primary-light: #A29BFE;
+    --accent: #FD79A8; /* Rosa choque */
+
+    /* Utilitários */
+    --success: #00B894;
+    --warning: #FDCB6E;
+    --error: #FF7675;
+    --info: #74B9FF;
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased min-h-screen selection:bg-[var(--primary)] selection:text-white;
+  }
+}
+
+@layer components {
+  /* Botões base */
+  .btn {
+    @apply inline-flex items-center justify-center font-medium rounded-2xl transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  .btn-lg {
+    @apply px-6 py-4 text-lg;
+  }
+
+  .btn-md {
+    @apply px-5 py-3 text-base;
+  }
+
+  .btn-primary {
+    @apply bg-[var(--primary)] text-white hover:bg-[var(--primary-light)] min-h-[56px] w-full;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--bg-elevated)] text-white border border-white/10 hover:border-white/20 min-h-[56px] w-full;
+  }
+
+  /* Cards e Containers com aspecto de Glassmorphism suave */
+  .glass-card {
+    @apply bg-[var(--bg-card)] backdrop-blur-xl border border-white/10 rounded-3xl shadow-lg;
+  }
+
+  /* Input fields */
+  .input-field {
+    @apply w-full bg-[var(--bg-elevated)] border border-white/10 rounded-2xl px-4 py-4 text-white focus:outline-none focus:border-[var(--primary)] transition-colors;
+  }
+}
+
+/* Utilitário para evitar que a tela pule no mobile-first */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
