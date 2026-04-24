@@ -9,8 +9,8 @@ export default function Dashboard() {
         <span className="font-label-caps text-label-caps text-secondary uppercase tracking-widest mb-xs block">
           Visão Geral do Estúdio
         </span>
-        <h2 className="font-headline-lg text-headline-lg text-primary">Dashboard</h2>
-      </header>
+        <h2 className="font-headline-lg text-headline-lg text-primary">Painel Principal</h2>
+      </section>
 
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 gap-gutter">
