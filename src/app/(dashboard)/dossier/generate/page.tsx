@@ -2,19 +2,30 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { generateDossierAction } from "@/lib/actions/ai";
 
 export default function GenerateDossierPage() {
   const [logo, setLogo] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(true);
+  const [aiData, setAiData] = useState<any>(null);
+  const [consultation, setConsultation] = useState<any>(null);
 
   useEffect(() => {
-    // Load logo from localStorage
-    const savedLogo = localStorage.getItem("barber_logo");
-    if (savedLogo) setLogo(savedLogo);
+    async function startGeneration() {
+      const savedLogo = localStorage.getItem("barber_logo");
+      if (savedLogo) setLogo(savedLogo);
 
-    // Simulate AI generation delay
-    const timer = setTimeout(() => setIsGenerating(false), 3000);
-    return () => clearTimeout(timer);
+      const rawConsultation = localStorage.getItem("current_consultation");
+      if (rawConsultation) {
+        const data = JSON.parse(rawConsultation);
+        setConsultation(data);
+        const result = await generateDossierAction(data);
+        setAiData(result);
+      }
+      
+      setIsGenerating(false);
+    }
+    startGeneration();
   }, []);
 
   if (isGenerating) {
@@ -27,9 +38,9 @@ export default function GenerateDossierPage() {
           </span>
         </div>
         <div>
-          <h2 className="font-headline-md text-headline-md text-primary mb-2">Refinando Dossiê</h2>
-          <p className="text-on-surface-variant max-w-[280px] mx-auto">
-            Nossa IA está analisando as fotos e cruzando com os objetivos do cliente para gerar o guia perfeito.
+          <h2 className="font-headline-md text-headline-md text-primary mb-2">IA Gerando Dossiê...</h2>
+          <p className="text-on-surface-variant max-w-[280px] mx-auto italic">
+            "Analisando traços faciais e cruzando com objetivos de imagem..."
           </p>
         </div>
       </div>
@@ -55,34 +66,26 @@ export default function GenerateDossierPage() {
       {/* Before & After Comparison */}
       <section className="mb-12">
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-outline-variant shadow-lg group">
+          <div className="space-y-2 text-center">
+             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-outline-variant shadow-lg">
                 <img
                   alt="Antes"
                   className="w-full h-full object-cover"
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[10px] text-white font-label-caps uppercase tracking-widest">
-                  Original
-                </div>
              </div>
-             <p className="text-center text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest">Estado Inicial</p>
+             <p className="text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Antes</p>
           </div>
           
-          <div className="space-y-2">
-             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-secondary shadow-[0_0_25px_rgba(212,175,55,0.2)] group">
+          <div className="space-y-2 text-center">
+             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-secondary shadow-[0_0_25px_rgba(212,175,55,0.2)]">
                 <img
                   alt="Depois"
                   className="w-full h-full object-cover"
                   src="https://images.unsplash.com/photo-1618151313441-bc79b11e5090?q=80&w=1974&auto=format&fit=crop"
                 />
-                <div className="absolute top-4 left-4 px-3 py-1 bg-secondary text-white rounded-full text-[10px] font-label-caps uppercase tracking-widest shadow-md">
-                  Proposta
-                </div>
-                {/* AI Analysis Overlay */}
-                <div className="absolute inset-0 bg-secondary/5 pointer-events-none"></div>
              </div>
-             <p className="text-center text-[10px] font-label-caps text-secondary uppercase tracking-widest font-bold">Nova Imagem</p>
+             <p className="text-[10px] font-label-caps text-secondary uppercase tracking-widest font-bold mt-1">Depois</p>
           </div>
         </div>
       </section>
@@ -91,37 +94,49 @@ export default function GenerateDossierPage() {
       <div className="space-y-10">
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
-              <span className="material-symbols-outlined text-white text-xl">target</span>
+            <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center text-white">
+              <span className="material-symbols-outlined">target</span>
             </div>
-            <h3 className="font-headline-sm text-headline-sm">Objetivo da Imagem</h3>
+            <h3 className="font-headline-sm text-headline-sm">Objetivo do Cliente</h3>
           </div>
           <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant italic text-on-surface-variant leading-relaxed">
-            "O cliente busca transmitir maior autoridade no ambiente corporativo, mantendo a acessibilidade. A proposta foca em linhas retas e estrutura sólida."
+            {consultation?.objective || "Nenhum objetivo especificado."}
           </div>
         </section>
 
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-              <span className="material-symbols-outlined text-primary text-xl">psychology</span>
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+              <span className="material-symbols-outlined">auto_awesome</span>
             </div>
-            <h3 className="font-headline-sm text-headline-sm">Análise Visagista (IA)</h3>
+            <h3 className="font-headline-sm text-headline-sm">Análise Personalizada (IA)</h3>
           </div>
           <div className="space-y-4">
             <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
-              <h4 className="font-label-md text-primary uppercase mb-2">Formato Facial</h4>
+              <h4 className="font-label-md text-primary uppercase mb-1">Morfotipo e Temperamento</h4>
               <p className="text-body-md text-on-surface-variant leading-snug">
-                Identificamos um formato retangular com mandíbula marcada. Recomendamos volume lateral controlado para equilibrar a verticalidade.
+                {aiData?.analiseMorfotipo} • {aiData?.temperamento}
               </p>
             </div>
             <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
-              <h4 className="font-label-md text-primary uppercase mb-2">Temperamento</h4>
-              <p className="text-body-md text-on-surface-variant leading-snug">
-                Predomínio de traços Coléricos (força e determinação). A barba em formato 'boxer' reforça a seriedade desejada.
-              </p>
+              <h4 className="font-label-md text-primary uppercase mb-1">Recomendação Técnica</h4>
+              <div className="space-y-2 mt-2">
+                <div className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-sm text-secondary">content_cut</span>
+                  <p className="text-sm"><strong>Cabelo:</strong> {aiData?.recomendacaoCabelo}</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-sm text-secondary">face</span>
+                  <p className="text-sm"><strong>Barba:</strong> {aiData?.recomendacaoBarba}</p>
+                </div>
+              </div>
             </div>
           </div>
+        </section>
+        
+        <section className="text-center py-6 border-t border-outline-variant">
+           <p className="font-headline-sm text-primary mb-2">Conclusão</p>
+           <p className="text-on-surface-variant italic">"{aiData?.conclusao}"</p>
         </section>
       </div>
 

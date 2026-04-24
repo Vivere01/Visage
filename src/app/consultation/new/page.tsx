@@ -349,7 +349,11 @@ export default function NewConsultation() {
             </div>
 
             <button 
-              onClick={() => router.push('/dossier/generate')} // Redirecting to result page
+              onClick={() => {
+                const data = { ...clientInfo, notes };
+                localStorage.setItem("current_consultation", JSON.stringify(data));
+                router.push('/dossier/generate');
+              }}
               className="w-full bg-zinc-900 text-white py-4 rounded-xl font-label-caps text-label-caps uppercase tracking-widest shadow-lg active:scale-95 transition-all opacity-0 animate-in fade-in fill-mode-forwards delay-1000"
             >
               Visualizar Dossiê
