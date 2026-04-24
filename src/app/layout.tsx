@@ -49,7 +49,12 @@ export default function RootLayout({
           <h1 className="font-inter tracking-[0.2em] font-black text-neutral-900 dark:text-neutral-50 uppercase text-sm">
             VISAGE STUDIO
           </h1>
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
+            <Link href="/forms/builder">
+              <span className="material-symbols-outlined text-neutral-900 dark:text-neutral-100 cursor-pointer hover:opacity-70 transition-opacity">
+                more_vert
+              </span>
+            </Link>
             <div className="w-8 h-8 rounded-full bg-neutral-200 overflow-hidden border border-neutral-200">
               <img
                 alt="Consultant"

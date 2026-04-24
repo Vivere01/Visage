@@ -85,6 +85,29 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        {/* Form Builder Quick Access */}
+        <div className="space-y-md mt-6 pb-12">
+          <h3 className="font-headline-sm text-headline-sm mb-md flex items-center justify-start gap-xs px-2">
+            <span className="material-symbols-outlined">quiz</span>
+            Questionários & Lead Gen
+          </h3>
+          
+          <div className="bg-surface-container-low border border-outline-variant p-6 rounded-2xl flex items-center gap-4 group hover:bg-surface-container-highest transition-colors cursor-pointer">
+            <div className="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary">
+              <span className="material-symbols-outlined text-3xl">assignment</span>
+            </div>
+            <div className="flex-1">
+              <h4 className="font-body-lg font-medium">Novo Formulário</h4>
+              <p className="text-xs text-on-surface-variant">Crie um quiz e receba leads direto no app.</p>
+            </div>
+            <Link 
+              href="/forms/builder"
+              className="w-10 h-10 rounded-full bg-zinc-900 text-white flex items-center justify-center shadow-md active:scale-90 transition-all"
+            >
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </Link>
+          </div>
+        </div>
       </div>
 
       {/* Contextual FAB */}
