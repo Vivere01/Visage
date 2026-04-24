@@ -19,6 +19,15 @@ export default function FormBuilder() {
   ]);
   const [isSharing, setIsSharing] = useState(false);
 
+  React.useEffect(() => {
+    const saved = localStorage.getItem("standard_form");
+    if (saved) {
+      const { title, questions } = JSON.parse(saved);
+      setTitle(title);
+      setQuestions(questions);
+    }
+  }, []);
+
   const addQuestion = () => {
     const newId = Math.random().toString(36).substr(2, 9);
     setQuestions([...questions, { id: newId, label: "", type: "text" }]);
@@ -30,6 +39,15 @@ export default function FormBuilder() {
 
   const updateQuestion = (id: string, label: string) => {
     setQuestions(questions.map(q => q.id === id ? { ...q, label } : q));
+  };
+
+  const [isSaving, setIsSaving] = useState(false);
+
+  const saveAsStandard = () => {
+    const formData = { title, questions };
+    localStorage.setItem("standard_form", JSON.stringify(formData));
+    setIsSaving(true);
+    setTimeout(() => setIsSaving(false), 2000);
   };
 
   const copyLink = () => {
@@ -49,13 +67,22 @@ export default function FormBuilder() {
           </Link>
           <h1 className="font-headline-sm text-headline-sm">Criar Formulário</h1>
         </div>
-        <button 
-          onClick={copyLink}
-          className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-caps text-xs uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all shadow-md"
-        >
-          <span className="material-symbols-outlined text-sm">{isSharing ? 'check' : 'share'}</span>
-          {isSharing ? 'Copiado!' : 'Compartilhar'}
-        </button>
+        <div className="flex gap-2">
+          <button 
+            onClick={saveAsStandard}
+            className="border border-primary text-primary px-4 py-2 rounded-full font-label-caps text-xs uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">{isSaving ? 'check' : 'save'}</span>
+            {isSaving ? 'Salvo!' : 'Salvar Padrão'}
+          </button>
+          <button 
+            onClick={copyLink}
+            className="bg-primary text-on-primary px-4 py-2 rounded-full font-label-caps text-xs uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all shadow-md"
+          >
+            <span className="material-symbols-outlined text-sm">{isSharing ? 'check' : 'share'}</span>
+            {isSharing ? 'Copiado!' : 'Compartilhar'}
+          </button>
+        </div>
       </header>
 
       <main className="pt-32 px-6 max-w-lg mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
