@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Dashboard() {
   return (
-    <main className="max-w-7xl mx-auto">
+    <main className="max-w-7xl mx-auto pb-24">
       {/* Header Section */}
       <section className="mb-lg text-center">
         <span className="font-label-caps text-label-caps text-secondary uppercase tracking-widest mb-xs block">
@@ -12,98 +12,91 @@ export default function Dashboard() {
         <h2 className="font-headline-lg text-headline-lg text-primary">Painel Principal</h2>
       </section>
 
-      {/* Bento Grid Layout */}
+      {/* Main Action Section */}
+      <div className="mb-lg">
+        <Link
+          href="/consultation/new"
+          className="w-full bg-primary text-on-primary p-6 rounded-2xl flex flex-col items-center justify-center gap-3 shadow-lg active:scale-[0.98] transition-all group border border-primary/20"
+        >
+          <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+            <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+              add_circle
+            </span>
+          </div>
+          <div className="text-center">
+            <h3 className="font-headline-sm text-headline-sm text-white">Nova Consulta</h3>
+            <p className="text-white/70 text-body-md">Inicie um novo dossiê visagista para um cliente</p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Grid Layout */}
       <div className="grid grid-cols-1 gap-gutter">
-        {/* Daily Schedule (Main Column) */}
+        {/* Recent Activity / Empty State */}
         <div className="space-y-md">
-          <h3 className="font-headline-sm text-headline-sm mb-md flex items-center justify-center gap-xs">
-            <span className="material-symbols-outlined">calendar_today</span>
-            Agenda de Hoje
+          <h3 className="font-headline-sm text-headline-sm mb-md flex items-center justify-start gap-xs px-2">
+            <span className="material-symbols-outlined">history</span>
+            Atividade Recente
           </h3>
 
-          {/* Appointment Card 1 (Active/Next) */}
-          <div className="bg-surface-container-lowest border border-outline-variant p-md rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.02)] transition-all hover:border-secondary group">
-            <div className="flex flex-col items-center justify-between gap-4">
-              <div className="flex flex-col items-center gap-md">
-                <div className="w-20 h-20 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all shrink-0 border-2 border-outline-variant">
-                  <img
-                    alt="Julian Thorne"
-                    className="w-full h-full object-cover"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuC57k-pTqVi_eINZ7ICLBkAqSPwGf1dTf9KtjWRu4Puwhyx2EqGlQHetqbXRCQT3PMvdez8GTzM-92yLBHWpti657ynp7SzAglK6zjmaXajWWrXPRRFePt7iEo-INsfU2eG2jssDj56a4JfGqZQHxI0QigFEpQxxYDNCGVgDSMhLVHZ9q2ZgmYvNc-JBXBYozQ1_0ZydLBMVFAKG6y_oGA3WSeqkfkHGNVLmvKAAFBg1nxc97fWl1vl5aQZppFvYa9Vj0V1v6DM08Bf"
-                  />
-                </div>
-                <div className="text-center">
-                  <span className="font-label-caps text-[10px] text-on-primary bg-primary px-xs py-[2px] rounded uppercase mb-xs inline-block">
-                    Próximo Agendamento
-                  </span>
-                  <h4 className="font-headline-sm text-headline-sm">Julian Thorne</h4>
-                  <p className="font-body-md text-on-surface-variant">Perfil Visagista Completo • 10:30</p>
-                </div>
-              </div>
-              <Link
-                href="/session/1"
-                className="bg-primary text-on-primary font-label-caps text-label-caps px-md py-sm rounded-full hover:opacity-90 active:scale-95 transition-all uppercase tracking-widest flex items-center gap-xs w-full justify-center"
-              >
-                Iniciar Análise
-                <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
-              </Link>
+          <div className="bg-surface-container-lowest border border-outline-variant p-10 rounded-2xl flex flex-col items-center justify-center text-center space-y-4 opacity-80">
+            <div className="w-20 h-20 bg-surface-container-low rounded-full flex items-center justify-center text-outline">
+              <span className="material-symbols-outlined text-4xl">content_paste_off</span>
             </div>
-          </div>
-
-          {/* Appointment Card 2 */}
-          <div className="bg-white border border-outline-variant p-md rounded-lg flex items-center justify-between transition-all hover:bg-surface-container-low">
-            <div className="flex items-center gap-md">
-              <div className="text-on-surface-variant font-label-caps w-16 text-center shrink-0">11:45</div>
-              <div>
-                <h4 className="font-body-lg text-body-lg font-medium">Marcus Sterling</h4>
-                <p className="font-body-md text-on-surface-variant">Design de Barba & Mapeamento</p>
-              </div>
+            <div>
+              <h4 className="font-body-lg text-body-lg font-medium text-on-surface">Nenhuma consulta hoje</h4>
+              <p className="font-body-md text-on-surface-variant max-w-xs mx-auto">
+                Suas consultas e dossiês gerados aparecerão aqui para fácil acesso.
+              </p>
             </div>
-          </div>
-
-          {/* Appointment Card 3 */}
-          <div className="bg-white border border-outline-variant p-md rounded-lg flex items-center justify-between transition-all hover:bg-surface-container-low">
-            <div className="flex items-center gap-md">
-              <div className="text-on-surface-variant font-label-caps w-16 text-center shrink-0">14:00</div>
-              <div>
-                <h4 className="font-body-lg text-body-lg font-medium">Adrian Chen</h4>
-                <p className="font-body-md text-on-surface-variant">Primeira Consultoria</p>
-              </div>
-            </div>
+            <Link
+              href="/consultation/new"
+              className="text-primary font-label-caps text-label-caps hover:underline"
+            >
+              Começar agora
+            </Link>
           </div>
         </div>
 
-        {/* Stats & Quick Actions (Side Column) */}
-        <div className="space-y-md">
-          {/* Visagism Tool Preview */}
-          <div className="bg-primary text-on-primary p-md rounded-lg relative overflow-hidden aspect-square flex flex-col justify-end">
+        {/* Stats / Tool Preview */}
+        <div className="space-y-md mt-4">
+          <div className="bg-zinc-900 text-white p-md rounded-2xl relative overflow-hidden aspect-[16/9] flex flex-col justify-end border border-zinc-800">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0"></div>
             <img
-              alt="Visagism overlay"
-              className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYe3U6zzICdXSYC8e1Eoba7Xz97cBxaAREml58dIP63L5I0z0qIhHH2MMvqb-w7pPD4br_HiPVH2hxVt8CRsCVTK0GYactN616_iLNjvSwrFXLC9r3fB83LqOFrcaMFdtbwpfBVlz0t2jzCN2x2CFRqyKU9yzH5hwrWKX_7NXJiNXrmblm5ac3i2O6OEkwrSCawfzLAgYq1_UVLT4fGPZ4BSvUToEYqR4vM6k82yTlekZsS2lNXArKnkh6h8lAELVKvrxZdA7bRcop"
+              alt="Visagism mapping"
+              className="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay"
+              src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?q=80&w=2070&auto=format&fit=crop"
             />
-            <div className="relative z-10">
-              <span className="font-label-caps text-secondary-fixed text-[10px] uppercase tracking-widest mb-xs block">
-                Assistente de IA
+            <div className="relative z-10 p-2">
+              <span className="font-label-caps text-secondary text-[10px] uppercase tracking-widest mb-xs block">
+                Configuração
               </span>
-              <h3 className="font-headline-sm text-headline-sm text-white mb-sm">Mapeamento Facial</h3>
-              <p className="font-body-md text-zinc-400 mb-md">
-                Analise proporções faciais para determinar padrões geométricos ideais.
+              <h3 className="font-headline-sm text-headline-sm text-white mb-xs">Identidade Visual</h3>
+              <p className="font-body-sm text-zinc-400 mb-md">
+                Configure sua logo e informações que aparecerão no dossiê final.
               </p>
-              <button className="w-full bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps py-sm rounded uppercase tracking-widest hover:opacity-90 transition-opacity">
-                Abrir Câmera
-              </button>
+              <Link 
+                href="/settings/dossier"
+                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-white/10"
+              >
+                <span className="material-symbols-outlined text-sm">settings</span>
+                Personalizar Dossiê
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
       {/* Contextual FAB */}
-      <button className="fixed right-6 bottom-24 bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all z-40">
-        <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+      <Link 
+        href="/consultation/new"
+        className="fixed right-6 bottom-24 bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all z-40"
+      >
+        <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>
           add
         </span>
-      </button>
+      </Link>
     </main>
   );
 }
+

@@ -1,119 +1,147 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function GenerateDossierPage() {
+  const [logo, setLogo] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(true);
+
+  useEffect(() => {
+    // Load logo from localStorage
+    const savedLogo = localStorage.getItem("barber_logo");
+    if (savedLogo) setLogo(savedLogo);
+
+    // Simulate AI generation delay
+    const timer = setTimeout(() => setIsGenerating(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isGenerating) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center space-y-8 animate-in fade-in duration-700">
+        <div className="relative">
+          <div className="w-24 h-24 border-4 border-primary/10 border-t-primary rounded-full animate-spin"></div>
+          <span className="material-symbols-outlined absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary text-4xl animate-pulse">
+            magic_button
+          </span>
+        </div>
+        <div>
+          <h2 className="font-headline-md text-headline-md text-primary mb-2">Refinando Dossiê</h2>
+          <p className="text-on-surface-variant max-w-[280px] mx-auto">
+            Nossa IA está analisando as fotos e cruzando com os objetivos do cliente para gerar o guia perfeito.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="animate-fade-in">
-      {/* Header Section */}
-      <header className="mb-lg text-center">
-        <h2 className="font-headline-lg text-headline-lg text-primary mb-xs">Gerar Dossiê</h2>
-        <p className="font-body-md text-body-md text-on-surface-variant max-w-[280px] mx-auto">
-          Nossa inteligência artificial está consolidando os dados para criar um guia personalizado de estilo.
-        </p>
-      </header>
+    <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-32">
+      {/* Branding Header */}
+      <div className="flex flex-col items-center mb-10 pt-4">
+        {logo ? (
+          <img src={logo} className="h-16 w-auto object-contain mb-4" alt="Barber Logo" />
+        ) : (
+          <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center mb-2">
+             <span className="material-symbols-outlined text-zinc-400">store</span>
+          </div>
+        )}
+        <h1 className="font-inter tracking-[0.3em] font-black text-xs uppercase text-zinc-400">
+          Dossiê Visagista Premium
+        </h1>
+      </div>
 
-      {/* AI Processing Card */}
-      <section className="mb-xl relative">
-        <div className="bg-white border border-outline-variant rounded-xl p-md overflow-hidden relative">
-          <div className="shimmer absolute inset-0 opacity-30"></div>
-          <div className="relative z-10 flex flex-col items-center py-md">
-            <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-md border border-outline-variant">
-              <span className="material-symbols-outlined text-secondary text-3xl">cognition</span>
-            </div>
-            <span className="font-label-caps text-label-caps text-on-primary-container mb-base">Status</span>
-            <span className="font-headline-sm text-headline-sm text-primary">IA Processando...</span>
+      {/* Before & After Comparison */}
+      <section className="mb-12">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-outline-variant shadow-lg group">
+                <img
+                  alt="Antes"
+                  className="w-full h-full object-cover"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"
+                />
+                <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-[10px] text-white font-label-caps uppercase tracking-widest">
+                  Original
+                </div>
+             </div>
+             <p className="text-center text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest">Estado Inicial</p>
+          </div>
+          
+          <div className="space-y-2">
+             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-secondary shadow-[0_0_25px_rgba(212,175,55,0.2)] group">
+                <img
+                  alt="Depois"
+                  className="w-full h-full object-cover"
+                  src="https://images.unsplash.com/photo-1618151313441-bc79b11e5090?q=80&w=1974&auto=format&fit=crop"
+                />
+                <div className="absolute top-4 left-4 px-3 py-1 bg-secondary text-white rounded-full text-[10px] font-label-caps uppercase tracking-widest shadow-md">
+                  Proposta
+                </div>
+                {/* AI Analysis Overlay */}
+                <div className="absolute inset-0 bg-secondary/5 pointer-events-none"></div>
+             </div>
+             <p className="text-center text-[10px] font-label-caps text-secondary uppercase tracking-widest font-bold">Nova Imagem</p>
           </div>
         </div>
       </section>
 
-      {/* PDF Components List */}
-      <section className="mb-xl">
-        <h3 className="font-label-caps text-label-caps text-on-primary-container mb-md border-b border-outline-variant pb-2">
-          Conteúdo do Dossiê
-        </h3>
-        <ul className="space-y-sm">
-          <li className="flex items-center justify-between py-xs border-b border-neutral-100">
-            <div className="flex items-center gap-sm">
-              <span className="material-symbols-outlined text-secondary text-[20px]">face</span>
-              <span className="font-body-md text-body-md">Análise de Morfotipo</span>
+      {/* Analysis Content */}
+      <div className="space-y-10">
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
+              <span className="material-symbols-outlined text-white text-xl">target</span>
             </div>
-            <span
-              className="material-symbols-outlined text-on-primary-container text-sm"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              check_circle
-            </span>
-          </li>
-          <li className="flex items-center justify-between py-xs border-b border-neutral-100">
-            <div className="flex items-center gap-sm">
-              <span className="material-symbols-outlined text-secondary text-[20px]">straighten</span>
-              <span className="font-body-md text-body-md">Mapeamento de Proporções</span>
-            </div>
-            <span
-              className="material-symbols-outlined text-on-primary-container text-sm"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              check_circle
-            </span>
-          </li>
-          <li className="flex items-center justify-between py-xs border-b border-neutral-100">
-            <div className="flex items-center gap-sm">
-              <span className="material-symbols-outlined text-secondary text-[20px]">brush</span>
-              <span className="font-body-md text-body-md">Mockup Final (Visagismo)</span>
-            </div>
-            <div className="w-3 h-3 rounded-full bg-secondary/20 animate-pulse"></div>
-          </li>
-          <li className="flex items-center justify-between py-xs border-b border-neutral-100">
-            <div className="flex items-center gap-sm">
-              <span className="material-symbols-outlined text-secondary text-[20px]">history</span>
-              <span className="font-body-md text-body-md">Histórico de Sessões</span>
-            </div>
-            <div className="w-2 h-2 rounded-full bg-surface-container-highest"></div>
-          </li>
-        </ul>
-      </section>
+            <h3 className="font-headline-sm text-headline-sm">Objetivo da Imagem</h3>
+          </div>
+          <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant italic text-on-surface-variant leading-relaxed">
+            "O cliente busca transmitir maior autoridade no ambiente corporativo, mantendo a acessibilidade. A proposta foca em linhas retas e estrutura sólida."
+          </div>
+        </section>
 
-      {/* Before & After Preview */}
-      <section className="mb-xl">
-        <h3 className="font-label-caps text-label-caps text-on-primary-container mb-md">Prévia de Resultado</h3>
-        <div className="grid grid-cols-2 gap-base bg-surface-container-low p-base rounded-lg border border-outline-variant">
-          <div className="relative aspect-[3/4] rounded overflow-hidden">
-            <img
-              alt="Antes"
-              className="w-full h-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2UfLXKN6IqUE6_2f17zhz-MfPcIu-A_26b0-PJQ6eeSfrK385AdCL_tYsHMxfeRRUSwQgTSnfRPvCyTiHdOxDo-dNO9L_R_Rbh2dlJO-0y71yRjPPKQBop6kFssSA6lyUmVHtVyuoJWh9Io1FhxbkiPSypWuaIoqihf3LL6DH-UR03xMGeICK_0k6aTgs7_pXEjpzccQwWCpuYicQEnqImHvGAzqkx_OjeFNJ0bweJr5Rcf50QQOsdloHH5DFCysUUr65vZopHVxD"
-            />
-            <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/40 backdrop-blur-sm rounded text-[10px] text-white font-label-caps">
-              Antes
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+              <span className="material-symbols-outlined text-primary text-xl">psychology</span>
+            </div>
+            <h3 className="font-headline-sm text-headline-sm">Análise Visagista (IA)</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
+              <h4 className="font-label-md text-primary uppercase mb-2">Formato Facial</h4>
+              <p className="text-body-md text-on-surface-variant leading-snug">
+                Identificamos um formato retangular com mandíbula marcada. Recomendamos volume lateral controlado para equilibrar a verticalidade.
+              </p>
+            </div>
+            <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
+              <h4 className="font-label-md text-primary uppercase mb-2">Temperamento</h4>
+              <p className="text-body-md text-on-surface-variant leading-snug">
+                Predomínio de traços Coléricos (força e determinação). A barba em formato 'boxer' reforça a seriedade desejada.
+              </p>
             </div>
           </div>
-          <div className="relative aspect-[3/4] rounded overflow-hidden">
-            <img
-              alt="Depois Mockup"
-              className="w-full h-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC_vlWlZqSJo-WcY4Hi82Jy6n9hZNSsdEv9dQIhcghggFT0gMRBPIKC0Gn00orAUKhuMyvdfubDsVpP4r1KeVAeZcEgRHiXpDxeOEquNY3uba6kGVtzVgaDsfGAhzMga1f6KteazYisOzfFz951J3OAhSQ0jvoh2k5GvbDffCCc6-h9vo4wHSi11mR1b7Choeyn6O5tpfBLL7zYQHwpteO1r4eUTzxnEgKXEeuLSw6uxJBc0rCNZufXcFTi3ngGJzqS8snIgKlNmAM"
-            />
-            <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-secondary text-white rounded text-[10px] font-label-caps">
-              Mockup
-            </div>
-            {/* Visagism Overlay Sim */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-40">
-              <div className="w-2/3 h-2/3 border border-secondary rounded-[50%]"></div>
-              <div className="absolute h-full w-[1px] bg-secondary left-1/2"></div>
-              <div className="absolute w-full h-[1px] bg-secondary top-1/2"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      {/* Primary Action */}
-      <footer className="fixed bottom-24 left-0 w-full px-margin-mobile max-w-lg mx-auto pointer-events-none">
-        <button className="w-full h-14 bg-primary text-on-primary rounded-full font-label-caps flex items-center justify-center gap-xs hover:opacity-90 active:scale-[0.98] transition-all shadow-lg pointer-events-auto">
-          <span className="material-symbols-outlined text-[20px]">auto_awesome</span>
-          GERAR PDF COM IA
+      {/* Actions */}
+      <div className="mt-12 space-y-4">
+        <button 
+          onClick={() => window.print()}
+          className="w-full bg-primary text-on-primary py-5 rounded-2xl font-label-caps text-label-caps uppercase tracking-widest shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+        >
+          <span className="material-symbols-outlined">picture_as_pdf</span>
+          Baixar Dossiê PDF
         </button>
-      </footer>
+        <Link 
+          href="/"
+          className="w-full border border-outline-variant py-4 rounded-2xl font-label-caps text-label-caps uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors"
+        >
+          Voltar ao Início
+        </Link>
+      </div>
     </div>
   );
 }
+

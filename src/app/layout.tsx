@@ -69,15 +69,15 @@ export default function RootLayout({
           <Link href="/" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
             <span className="material-symbols-outlined">home_max</span>
           </Link>
-          <div className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
+          <Link href="/consultation/new" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
             <span className="material-symbols-outlined">face_6</span>
-          </div>
+          </Link>
           <Link href="/dossier/generate" className="flex flex-col items-center justify-center text-[#D4AF37] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#D4AF37] after:rounded-full transition-all duration-300 ease-out cursor-pointer">
             <span className="material-symbols-outlined">analytics</span>
           </Link>
-          <div className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
+          <Link href="/settings/dossier" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
             <span className="material-symbols-outlined">person</span>
-          </div>
+          </Link>
         </nav>
       </body>
     </html>
