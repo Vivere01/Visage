@@ -70,11 +70,11 @@ enum MockupType {
 
 // ─── MODELS ─────────────────────────────────────────────
 
-/// Barbeiro — cliente pagante do SaaS
 model Barber {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
+  password  String   @default("$2b$10$vI8A7S9A7S9A7S9A7S9A7u9A7S9A7S9A7S9A7S9A7S9A7S9A7S9A") // Default for dev
   phone     String?
   shopName  String
   slug      String   @unique // URL pública: visage.app/b/{slug}
@@ -93,6 +93,7 @@ model Barber {
 
   @@map("barbers")
 }
+
 
 /// Cliente do barbeiro (quem recebe a consultoria)
 model Client {
@@ -120,6 +121,14 @@ model Session {
   clientId    String
   status      SessionStatus @default(PHOTO_PENDING)
   completedAt DateTime?
+  
+  // Notas manuais do visagista
+  visagistNotes      String?
+  visagistRecommendations String?
+  
+  // Fotos de antes e depois
+  photoBefore String?
+  photoAfter  String?
 
   barber            Barber             @relation(fields: [barberId], references: [id], onDelete: Cascade)
   client            Client             @relation(fields: [clientId], references: [id], onDelete: Cascade)
@@ -136,6 +145,7 @@ model Session {
   @@index([clientId])
   @@map("sessions")
 }
+
 
 /// Análise facial — resultado do MediaPipe + classificação
 model FaceAnalysis {

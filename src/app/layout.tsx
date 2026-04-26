@@ -22,13 +22,18 @@ export const viewport: Viewport = {
   themeColor: "#6C5CE7",
 };
 
+import { getSession } from "@/lib/auth";
 import Link from "next/link";
+import { AbstractFace } from "@/components/AbstractFace";
+import { LogoutButton } from "@/components/LogoutButton";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+
   return (
     <html lang="pt-BR">
       <head>
@@ -39,54 +44,47 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-on-background font-body-md antialiased">
-        {/* TopAppBar */}
-        <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md dark:bg-black/80 border-b border-neutral-200 dark:border-neutral-800 flex justify-between items-center px-6 h-16 w-full">
-          <div className="flex items-center gap-4">
-            <span className="material-symbols-outlined text-neutral-900 dark:text-neutral-100 cursor-pointer hover:opacity-70 transition-opacity scale-95 active:duration-150">
-              menu
-            </span>
-          </div>
-          <h1 className="font-inter tracking-[0.2em] font-black text-neutral-900 dark:text-neutral-50 uppercase text-sm">
-            VISAGE STUDIO
-          </h1>
-          <div className="flex items-center gap-4">
-            <Link href="/forms/builder">
-              <span className="material-symbols-outlined text-neutral-900 dark:text-neutral-100 cursor-pointer hover:opacity-70 transition-opacity">
-                more_vert
-              </span>
-            </Link>
-            <div className="w-8 h-8 rounded-full bg-neutral-200 overflow-hidden border border-neutral-200">
-              <img
-                alt="Consultant"
-                className="w-full h-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdbR5M-ug7G6me1z5x8bQ8IboFrgV9oyDPyDoOUirnrWOs4MqxrUtfnUjN75XoxxWN6dNM71gyD-cX-SpARHlUEJwQ52pZaX4ecUhwKuYaEqhUN_joFbhnEM1iusNRmQnO60jTC2u6i26yDQ7lXLgBRht8i8Ix8OgoE5_BAxdNrUdRcV5bAWxaVugPvC4k_tH2b394ilRwx2HZVX4RZ8TVypOS9uaNLcX9WOOMzDu5NfDKdn4pNhvPd6oOVkrvat8wYlBhEfDb8RFq"
-              />
+        {session && (
+          <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200 flex justify-between items-center px-6 h-16 max-w-lg mx-auto left-0 right-0">
+            <div className="flex items-center gap-4">
+              <LogoutButton />
             </div>
-          </div>
-        </nav>
+            <h1 className="font-inter tracking-[0.2em] font-black text-neutral-900 uppercase text-[10px] text-center flex flex-col">
+              <span className="text-zinc-400">VISAGÊ STUDIO</span>
+              <span className="text-primary tracking-normal">{session.shopName}</span>
+            </h1>
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center border border-zinc-200 overflow-hidden">
+                <AbstractFace className="w-6 h-6 text-zinc-400" />
+              </div>
+            </div>
+          </nav>
+        )}
 
-        <main className="pt-24 pb-32 px-margin-mobile max-w-lg mx-auto min-h-screen">
+        <main className={`${session ? "pt-24" : ""} pb-32 px-margin-mobile max-w-lg mx-auto min-h-screen`}>
           {children}
         </main>
 
-        {/* BottomNavBar */}
-        <nav className="fixed bottom-0 w-full z-50 pb-safe bg-white/90 backdrop-blur-lg dark:bg-neutral-950/90 border-t border-neutral-100 dark:border-neutral-900 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] flex justify-around items-center h-20 px-8">
-          <Link href="/" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
-            <span className="material-symbols-outlined">home_max</span>
-          </Link>
-          <Link href="/consultation/new" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
-            <span className="material-symbols-outlined">face_6</span>
-          </Link>
-          <Link href="/dossier/generate" className="flex flex-col items-center justify-center text-[#D4AF37] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#D4AF37] after:rounded-full transition-all duration-300 ease-out cursor-pointer">
-            <span className="material-symbols-outlined">analytics</span>
-          </Link>
-          <Link href="/settings/dossier" className="flex flex-col items-center justify-center text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-neutral-100 transition-all duration-300 ease-out cursor-pointer">
-            <span className="material-symbols-outlined">person</span>
-          </Link>
-        </nav>
+        {session && (
+          <nav className="fixed bottom-0 w-full z-50 pb-safe bg-white/90 backdrop-blur-lg border-t border-neutral-100 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] flex justify-around items-center h-20 px-8 max-w-lg mx-auto left-0 right-0">
+            <Link href="/" className="flex flex-col items-center justify-center text-neutral-400 hover:text-primary transition-all">
+              <span className="material-symbols-outlined">home_max</span>
+            </Link>
+            <Link href="/consultation/new" className="flex flex-col items-center justify-center text-neutral-400 hover:text-primary transition-all">
+              <span className="material-symbols-outlined">face_6</span>
+            </Link>
+            <Link href="/dossier/generate" className="flex flex-col items-center justify-center text-[#D4AF37] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#D4AF37] after:rounded-full transition-all">
+              <span className="material-symbols-outlined">analytics</span>
+            </Link>
+            <Link href="/settings" className="flex flex-col items-center justify-center text-neutral-400 hover:text-primary transition-all">
+              <span className="material-symbols-outlined">person</span>
+            </Link>
+          </nav>
+        )}
       </body>
     </html>
   );
 }
+
 
 

@@ -4,50 +4,62 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
 
-export async function generateDossierAction(clientData: {
-  name: string;
-  objective: string;
-  notes: string;
-}) {
+"use server";
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
+
+export async function generateDossierAction(sessionData: any) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+    const clientName = sessionData.client?.name || "Cliente";
+    const objective = sessionData.subjectiveProfile?.desiredImage || "Não especificado";
+    const notes = sessionData.visagistNotes || "Sem observações manuais.";
+    const temperament = sessionData.subjectiveProfile?.temperament || "A definir";
+    const essence = sessionData.subjectiveProfile?.essencePrimary || "A definir";
+
     const prompt = `
-      Você é um especialista em Visagismo e Consultoria de Imagem para Barbeiros de Luxo.
-      Sua tarefa é gerar uma análise profissional para um Dossiê Visagista.
+      Você é um Master Visagista e Consultor de Imagem Estratégica.
+      Sua missão é criar um Dossiê Visagista Premium que conecte a imagem externa com os objetivos internos do cliente.
       
-      Dados do Cliente:
-      - Nome: ${clientData.name}
-      - Objetivo da Imagem: ${clientData.objective}
-      - Observações do Consultor: ${clientData.notes}
+      Contexto da Consultoria:
+      - Cliente: ${clientName}
+      - Objetivo de Imagem: ${objective}
+      - Notas Técnicas do Visagista: ${notes}
+      - Temperamento Identificado: ${temperament}
+      - Essência Dominante: ${essence}
       
-      Por favor, gere um JSON com a seguinte estrutura:
+      Com base nesses dados, gere uma análise visagista profunda.
+      
+      Retorne estritamente um JSON com:
       {
-        "analiseMorfotipo": "descrição curta do formato facial sugerido",
-        "temperamento": "descrição baseada nos traços (ex: Colérico, Sanguíneo)",
-        "recomendacaoCabelo": "sugestão específica de corte",
-        "recomendacaoBarba": "sugestão específica de barba",
-        "conclusao": "uma frase de impacto fechando a consultoria"
+        "analiseMorfotipo": "análise técnica do formato do rosto e o que ele comunica",
+        "temperamento": "explicação de como o temperamento influencia a imagem",
+        "recomendacaoCabelo": "justificativa técnica para o corte sugerido",
+        "recomendacaoBarba": "justificativa técnica para o design de barba/rosto",
+        "conclusao": "uma mensagem poderosa de encerramento para o cliente"
       }
       
-      Responda apenas o JSON, sem markdown ou explicações.
+      Não use markdown, responda apenas o JSON.
     `;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     
-    // Clean JSON if Gemini adds markdown code blocks
     const cleanJson = text.replace(/```json|```/g, "").trim();
     return JSON.parse(cleanJson);
   } catch (error) {
     console.error("Erro ao gerar dossiê com Gemini:", error);
     return {
-      analiseMorfotipo: "Formato Retangular Estruturado",
-      temperamento: "Colérico-Sanguíneo",
-      recomendacaoCabelo: "Corte com volume no topo e laterais baixas",
-      recomendacaoBarba: "Barba Boxer bem desenhada",
-      conclusao: "A nova imagem transmite a autoridade e confiança desejadas."
+      analiseMorfotipo: "Perfil Geométrico Equilibrado",
+      temperamento: "Equilíbrio entre força e acolhimento",
+      recomendacaoCabelo: "Corte estruturado para reforçar a mandíbula",
+      recomendacaoBarba: "Linhas retas para aumentar a autoridade",
+      conclusao: "Sua nova imagem agora é o espelho do seu sucesso profissional."
     };
   }
 }
+
