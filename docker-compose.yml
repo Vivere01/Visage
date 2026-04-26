@@ -1,10 +1,6 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - DATABASE_URL=${DATABASE_URL}
+  visage:
+    build: .
     ports:
       - "3000:3000"
     environment:
