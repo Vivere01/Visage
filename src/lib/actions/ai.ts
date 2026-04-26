@@ -4,13 +4,15 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
 
-"use server";
+export interface DossierResult {
+  analiseMorfotipo: string;
+  temperamento: string;
+  recomendacaoCabelo: string;
+  recomendacaoBarba: string;
+  conclusao: string;
+}
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
-
-export async function generateDossierAction(sessionData: any) {
+export async function generateDossierAction(sessionData: any): Promise<DossierResult> {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -62,4 +64,3 @@ export async function generateDossierAction(sessionData: any) {
     };
   }
 }
-

@@ -13,6 +13,10 @@ export async function loginAction(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
+  if (!email || !password) {
+    return { error: "Campos obrigatórios." };
+  }
+
   const barber = await prisma.barber.findUnique({
     where: { email },
   });
@@ -43,6 +47,10 @@ export async function registerAction(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const shopName = formData.get("shopName") as string;
+
+  if (!name || !email || !password || !shopName) {
+    return { error: "Todos os campos são obrigatórios." };
+  }
 
   const existing = await prisma.barber.findUnique({
     where: { email },
