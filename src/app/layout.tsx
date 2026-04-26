@@ -47,15 +47,18 @@ export default async function RootLayout({
         {session && (
           <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200 flex justify-between items-center px-6 h-16 max-w-lg mx-auto left-0 right-0">
             <div className="flex items-center gap-4">
-              <LogoutButton />
+              <span className="material-symbols-outlined text-on-surface cursor-pointer hover:opacity-70">
+                menu
+              </span>
             </div>
-            <h1 className="font-inter tracking-[0.2em] font-black text-neutral-900 uppercase text-[10px] text-center flex flex-col">
-              <span className="text-zinc-400">VISAGÊ STUDIO</span>
-              <span className="text-primary tracking-normal">{session.shopName}</span>
-            </h1>
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center border border-zinc-200 overflow-hidden">
-                <AbstractFace className="w-6 h-6 text-zinc-400" />
+            <div className="text-center flex flex-col">
+              <span className="text-[8px] tracking-[0.3em] font-bold text-on-surface-variant uppercase">VISAGÊ STUDIO</span>
+              <span className="text-[10px] font-black text-primary tracking-normal uppercase">{session.shopName}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <LogoutButton />
+              <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant overflow-hidden">
+                <AbstractFace className="w-6 h-6 text-on-surface-variant" />
               </div>
             </div>
           </nav>
