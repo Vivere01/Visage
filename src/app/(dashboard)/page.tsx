@@ -1,15 +1,19 @@
 import React from "react";
 import Link from "next/link";
+import { LogoutButton } from "@/components/LogoutButton";
 
 export default function Dashboard() {
   return (
     <main className="max-w-7xl mx-auto pb-24">
       {/* Header Section */}
-      <section className="mb-lg text-center">
-        <span className="font-label-caps text-label-caps text-secondary uppercase tracking-widest mb-xs block">
-          Visão Geral do Estúdio
-        </span>
-        <h2 className="font-headline-lg text-headline-lg text-primary">Painel Principal</h2>
+      <section className="mb-lg flex items-center justify-between px-2">
+        <div>
+          <span className="font-label-caps text-label-caps text-secondary uppercase tracking-widest mb-xs block">
+            Visão Geral do Estúdio
+          </span>
+          <h2 className="font-headline-lg text-headline-lg text-primary">Painel Principal</h2>
+        </div>
+        <LogoutButton />
       </section>
 
       {/* Main Action Section */}
