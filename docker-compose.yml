@@ -1,6 +1,5 @@
 services:
   app:
-    image: visage-app:latest
     build:
       context: .
       dockerfile: Dockerfile

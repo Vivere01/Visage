@@ -1,4 +1,5 @@
 FROM node:20-alpine AS base
+ENV BUILD_ID=force_rebuild_1
 
 # Install dependencies only when needed
 FROM base AS deps
