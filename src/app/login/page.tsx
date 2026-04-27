@@ -72,10 +72,6 @@ export default function LoginPage() {
             {!loading && <span className="material-symbols-outlined text-sm">login</span>}
           </button>
           
-          <div className="mt-4 p-3 bg-zinc-50 border border-zinc-100 rounded-xl text-center">
-            <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">Acesso de Teste</p>
-            <p className="text-[11px] text-zinc-500">admin@gmail.com | admin123</p>
-          </div>
         </form>
 
         <p className="text-center text-on-surface-variant font-body-sm">
