@@ -119,103 +119,110 @@ export default function GenerateDossierPage() {
 
   if (aiData) {
     return (
-      <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-32">
-        {/* Branding Header */}
-        <div className="flex flex-col items-center mb-10 pt-4">
-          <div className="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center mb-2">
-             <AbstractFace className="w-8 h-8 text-white opacity-80" />
+      <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-32 print:pb-0 print:pt-0">
+        {/* Branding Header - Escondido na impressão se houver papel timbrado, ou estilizado */}
+        <div className="flex flex-col items-center mb-10 pt-4 print:mb-6">
+          <div className="w-16 h-16 bg-[#1A1A1A] rounded-[20px] flex items-center justify-center mb-4 shadow-xl">
+             <AbstractFace className="w-10 h-10 text-[#9B7D4E]" />
           </div>
-          <h1 className="font-inter tracking-[0.3em] font-black text-[10px] uppercase text-zinc-400 text-center">
-            Dossiê Visagista Premium<br/>
-            <span className="text-primary tracking-normal">{sessionDetails?.barber?.shopName}</span>
-          </h1>
+          <h1 className="font-serif italic text-3xl text-[#1A1A1A] text-center mb-1">Dossiê Visagista</h1>
+          <div className="h-[1px] w-20 bg-[#9B7D4E] mb-2"></div>
+          <p className="text-[10px] uppercase tracking-[4px] text-zinc-400 font-bold">{sessionDetails?.barber?.shopName}</p>
         </div>
 
         {/* Before & After Comparison */}
-        <section className="mb-12">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2 text-center">
-               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-outline-variant shadow-lg flex items-center justify-center bg-zinc-50">
+        <section className="mb-12 print:mb-8">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-3">
+               <div className="relative aspect-[3/4] rounded-[32px] overflow-hidden border border-zinc-100 shadow-2xl flex items-center justify-center bg-zinc-50">
                   {sessionDetails?.photoBefore ? (
                     <img src={sessionDetails.photoBefore} className="w-full h-full object-cover" />
                   ) : (
                     <div className="text-center p-4">
                       <AbstractFace className="w-12 h-12 text-zinc-200 mx-auto mb-2" />
-                      <p className="text-[8px] text-zinc-400 uppercase tracking-tighter">Aguardando Foto Real</p>
+                      <p className="text-[8px] text-zinc-400 uppercase tracking-tighter">Estado Atual</p>
                     </div>
                   )}
                </div>
-               <p className="text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest mt-1">Antes</p>
+               <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[3px] text-center">Diagnóstico Inicial</p>
             </div>
             
-            <div className="space-y-2 text-center">
-               <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-secondary shadow-[0_0_25px_rgba(212,175,55,0.1)] flex items-center justify-center bg-zinc-50">
+            <div className="space-y-3">
+               <div className="relative aspect-[3/4] rounded-[32px] overflow-hidden border-2 border-[#9B7D4E] shadow-[0_20px_50px_rgba(155,125,78,0.15)] flex items-center justify-center bg-zinc-50">
                   {sessionDetails?.photoAfter ? (
                     <img src={sessionDetails.photoAfter} className="w-full h-full object-cover" />
                   ) : (
                     <div className="text-center p-4">
-                      <AbstractFace className="w-12 h-12 text-secondary/20 mx-auto mb-2" />
-                      <p className="text-[8px] text-secondary/40 uppercase tracking-tighter">Projeção Visagista</p>
+                      <AbstractFace className="w-12 h-12 text-[#9B7D4E]/20 mx-auto mb-2" />
+                      <p className="text-[8px] text-[#9B7D4E]/40 uppercase tracking-tighter">Projeção Estratégica</p>
                     </div>
                   )}
                </div>
-               <p className="text-[10px] font-label-caps text-secondary uppercase tracking-widest font-bold mt-1">Depois</p>
+               <p className="text-[10px] font-bold text-[#9B7D4E] uppercase tracking-[3px] text-center">Imagem Sugerida</p>
             </div>
           </div>
         </section>
 
         {/* Analysis Content */}
-        <div className="space-y-10">
-          <section>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center text-white">
-                <span className="material-symbols-outlined">description</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm">Notas do Visagista</h3>
+        <div className="space-y-8 print:space-y-6">
+          <section className="bg-[#FDFCFB] p-8 rounded-[40px] border border-[#F5F0EB]">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-[10px] font-bold text-[#9B7D4E] bg-[#9B7D4E]/10 px-3 py-1 rounded-full uppercase tracking-widest">01</span>
+              <h3 className="text-xl font-medium">Análise de Morfotipo</h3>
             </div>
-            <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant text-on-surface-variant leading-relaxed">
-              {sessionDetails?.visagistNotes || "Nenhuma observação manual descrita."}
-            </div>
+            <p className="text-zinc-600 leading-relaxed text-sm">
+              {aiData?.analiseMorfotipo}
+            </p>
           </section>
 
-          <section>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                <span className="material-symbols-outlined">auto_awesome</span>
-              </div>
-              <h3 className="font-headline-sm text-headline-sm">Análise Personalizada (IA)</h3>
+          <section className="bg-white p-8 rounded-[40px] border border-zinc-100 shadow-sm">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-[10px] font-bold text-[#9B7D4E] bg-[#9B7D4E]/10 px-3 py-1 rounded-full uppercase tracking-widest">02</span>
+              <h3 className="text-xl font-medium">Projeto de Imagem</h3>
             </div>
-            <div className="space-y-4">
-              <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
-                <h4 className="font-label-md text-primary uppercase mb-1">Diagnóstico</h4>
-                <p className="text-body-md text-on-surface-variant leading-snug">
-                  {aiData?.analiseMorfotipo} • {aiData?.temperamento}
-                </p>
+            <div className="grid gap-6">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[#9B7D4E] text-xl">content_cut</span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-zinc-400 uppercase mb-1">Cabelo & Estrutura</h4>
+                  <p className="text-sm text-zinc-700 leading-snug">{aiData?.recomendacaoCabelo}</p>
+                </div>
               </div>
-              <div className="p-5 bg-white border border-outline-variant rounded-2xl shadow-sm">
-                <h4 className="font-label-md text-primary uppercase mb-1">Recomendação do Visagista</h4>
-                <div className="space-y-3 mt-2">
-                  <div className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-sm text-secondary">content_cut</span>
-                    <p className="text-sm"><strong>Cabelo:</strong> {aiData?.recomendacaoCabelo || sessionDetails?.visagistRecommendations}</p>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-sm text-secondary">face</span>
-                    <p className="text-sm"><strong>Barba/Rosto:</strong> {aiData?.recomendacaoBarba}</p>
-                  </div>
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[#9B7D4E] text-xl">face</span>
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-zinc-400 uppercase mb-1">Barba & Visagismo Facial</h4>
+                  <p className="text-sm text-zinc-700 leading-snug">{aiData?.recomendacaoBarba}</p>
                 </div>
               </div>
             </div>
           </section>
+
+          <section className="bg-[#1A1A1A] p-8 rounded-[40px] text-white overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#9B7D4E]/20 rounded-full blur-3xl"></div>
+            <div className="relative z-10">
+              <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-[#9B7D4E]">verified</span>
+                Conclusão Estratégica
+              </h3>
+              <p className="text-white/70 italic leading-relaxed">
+                "{aiData?.conclusao}"
+              </p>
+            </div>
+          </section>
         </div>
 
-        {/* Actions */}
-        <div className="mt-12 space-y-4">
+        {/* Actions - Escondidos na Impressão */}
+        <div className="mt-12 space-y-4 print:hidden">
           <button 
             onClick={() => window.print()}
-            className="w-full bg-primary text-on-primary py-5 rounded-2xl font-label-caps text-label-caps uppercase tracking-widest shadow-xl active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+            className="w-full bg-[#9B7D4E] text-white py-5 rounded-[24px] font-bold uppercase tracking-[2px] shadow-2xl active:scale-[0.98] transition-all flex items-center justify-center gap-3"
           >
-            <span className="material-symbols-outlined">picture_as_pdf</span>
+            <span className="material-symbols-outlined">file_download</span>
             Baixar Dossiê PDF
           </button>
           <button 
@@ -224,9 +231,9 @@ export default function GenerateDossierPage() {
               setSelectedSessionId(null);
               setSessionDetails(null);
             }}
-            className="w-full border border-outline-variant py-4 rounded-2xl font-label-caps text-label-caps uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors"
+            className="w-full text-zinc-400 py-4 font-bold uppercase tracking-[1px] text-xs hover:text-zinc-600 transition-colors"
           >
-            Novo Dossiê
+            Nova Consulta
           </button>
         </div>
       </div>
