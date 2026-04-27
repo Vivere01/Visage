@@ -79,6 +79,9 @@ export default async function RootLayout({
             <Link href="/dossier/generate" className="flex flex-col items-center justify-center text-[#D4AF37] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#D4AF37] after:rounded-full transition-all">
               <span className="material-symbols-outlined">analytics</span>
             </Link>
+            <Link href="/forms" className="flex flex-col items-center justify-center text-neutral-400 hover:text-primary transition-all">
+              <span className="material-symbols-outlined">quiz</span>
+            </Link>
             <Link href="/settings" className="flex flex-col items-center justify-center text-neutral-400 hover:text-primary transition-all">
               <span className="material-symbols-outlined">person</span>
             </Link>
