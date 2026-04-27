@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import { LogoutButton } from "@/components/LogoutButton";
 
 export default function Dashboard() {
   return (
@@ -13,7 +12,6 @@ export default function Dashboard() {
           </span>
           <h2 className="font-headline-lg text-headline-lg text-primary">Painel Principal</h2>
         </div>
-        <LogoutButton />
       </section>
 
       {/* Main Action Section */}
