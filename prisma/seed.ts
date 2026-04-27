@@ -1,14 +1,13 @@
 import { PrismaClient } from '@prisma/client'
-import * as bcryptjs from 'bcryptjs'
+import * as bcrypt from 'bcryptjs'
 import "dotenv/config"
 
+const prisma = new PrismaClient()
+
 async function main() {
-  // Inicialização forçada com a URL do env
-  const prisma = new PrismaClient()
+  console.log("Iniciando seed com Prisma 6...")
   
-  console.log("Iniciando seed...")
-  
-  const hashedPassword = await bcryptjs.hash('admin123', 10)
+  const hashedPassword = await bcrypt.hash('admin123', 10)
   
   const admin = await prisma.barber.upsert({
     where: { email: 'admin@gmail.com' },
@@ -24,11 +23,14 @@ async function main() {
     },
   })
 
-  console.log("Usuário administrador criado/atualizado:", admin.email)
-  await prisma.$disconnect()
+  console.log("Usuário administrador configurado:", admin.email)
 }
 
-main().catch((e) => {
-  console.error("Erro no seed:", e)
-  process.exit(1)
-})
+main()
+  .catch((e) => {
+    console.error("Erro no seed:", e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
