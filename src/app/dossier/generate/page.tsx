@@ -69,7 +69,7 @@ export default function GenerateDossierPage() {
             <div className="text-center py-12 bg-surface-container-low rounded-3xl border border-dashed border-outline-variant">
               <span className="material-symbols-outlined text-4xl text-zinc-300 mb-2">find_in_page</span>
               <p className="text-on-surface-variant">Nenhuma consulta encontrada.</p>
-              <Link href="/sessions/new" className="text-primary font-bold hover:underline mt-2 block">
+              <Link href="/consultation/new" className="text-primary font-bold hover:underline mt-2 block">
                 Iniciar Nova Consultoria
               </Link>
             </div>
