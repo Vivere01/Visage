@@ -8,10 +8,10 @@ export default async function Dashboard() {
   
   // Buscar métricas reais
   const stats = {
-    totalConsultations: await prisma.consultation.count({
+    totalConsultations: await prisma.session.count({
       where: { barberId: session?.id }
     }),
-    recentClients: await prisma.consultation.findMany({
+    recentClients: await prisma.session.findMany({
       where: { barberId: session?.id },
       take: 3,
       orderBy: { createdAt: 'desc' },
