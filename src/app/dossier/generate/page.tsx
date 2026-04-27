@@ -31,6 +31,10 @@ export default function GenerateDossierPage() {
     const result = await getSessionDetailsAction(sessionId);
     if (result.session) {
       setSessionDetails(result.session);
+      // Se já existe um dossiê no banco, carregar direto
+      if (result.session.dossier) {
+        setAiData(result.session.dossier.sections);
+      }
     }
     setLoading(false);
   };

@@ -34,6 +34,7 @@ export async function getSessionDetailsAction(sessionId: string) {
       faceAnalysis: true,
       recommendation: true,
       mockups: true,
+      dossier: true,
     },
   });
 
