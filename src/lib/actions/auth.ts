@@ -17,27 +17,32 @@ export async function loginAction(formData: FormData) {
     return { error: "Campos obrigatórios." };
   }
 
-  const barber = await prisma.barber.findUnique({
-    where: { email },
-  });
+  try {
+    const barber = await prisma.barber.findUnique({
+      where: { email },
+    });
 
-  if (!barber) {
-    return { error: "Usuário não encontrado." };
+    if (!barber) {
+      return { error: "Usuário não encontrado." };
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, barber.password);
+
+    if (!isPasswordValid) {
+      return { error: "Senha incorreta." };
+    }
+
+    await setSession({
+      id: barber.id,
+      name: barber.name,
+      email: barber.email,
+      shopName: barber.shopName,
+      slug: barber.slug,
+    });
+  } catch (err: any) {
+    console.error("ERRO NO LOGIN:", err);
+    return { error: `Erro de conexão: ${err.message || "Tente novamente mais tarde"}` };
   }
-
-  const isPasswordValid = await bcrypt.compare(password, barber.password);
-
-  if (!isPasswordValid) {
-    return { error: "Senha incorreta." };
-  }
-
-  await setSession({
-    id: barber.id,
-    name: barber.name,
-    email: barber.email,
-    shopName: barber.shopName,
-    slug: barber.slug,
-  });
 
   redirect("/");
 }
@@ -52,34 +57,39 @@ export async function registerAction(formData: FormData) {
     return { error: "Todos os campos são obrigatórios." };
   }
 
-  const existing = await prisma.barber.findUnique({
-    where: { email },
-  });
+  try {
+    const existing = await prisma.barber.findUnique({
+      where: { email },
+    });
 
-  if (existing) {
-    return { error: "Email já cadastrado." };
+    if (existing) {
+      return { error: "Email já cadastrado." };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const slug = shopName.toLowerCase().replace(/\s+/g, "-") + "-" + Math.random().toString(36).substring(2, 7);
+
+    const barber = await prisma.barber.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        shopName,
+        slug,
+      },
+    });
+
+    await setSession({
+      id: barber.id,
+      name: barber.name,
+      email: barber.email,
+      shopName: barber.shopName,
+      slug: barber.slug,
+    });
+  } catch (err: any) {
+    console.error("ERRO NO REGISTRO:", err);
+    return { error: `Erro ao criar conta: ${err.message}` };
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const slug = shopName.toLowerCase().replace(/\s+/g, "-") + "-" + Math.random().toString(36).substring(2, 7);
-
-  const barber = await prisma.barber.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      shopName,
-      slug,
-    },
-  });
-
-  await setSession({
-    id: barber.id,
-    name: barber.name,
-    email: barber.email,
-    shopName: barber.shopName,
-    slug: barber.slug,
-  });
 
   redirect("/");
 }
